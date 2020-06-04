@@ -37,7 +37,7 @@ struct Vendedor luis = {.id = 3, .nombre = "Luis"};
 struct Producto productoA = {.id = 1, .tipo = "A", .valor = 150, .comision = 0.09};
 struct Producto productoB = {.id = 2, .tipo = "B", .valor = 90, .comision = 0.06};
 
-//
+// Prototipo de funciones y metodos
 void imprimir_resumen_semanal_vendedor(struct Semana *, int);
 void imprimir_resumen_semanal_productos(struct Semana *, int);
 void imprimir_valor_semanal_productos(struct Semana *, int);
@@ -47,25 +47,12 @@ void imprimir_comision_mensual_vendedor(struct Semana *, int);
 void imprimir_total_comision(struct Semana *, int);
 void imprimir_semana_mas_vendida_producto(struct Semana *, int, struct Producto);
 void imprimir_vendedor_mas_ventas(struct Semana *, int);
-//
 double venta_total_vendido_producto(struct Venta *, int, struct Producto);
-
-//
 double comision_vendido_vendedor(struct Venta *, int, struct Vendedor);
-
-//
 double comision_vendido_vendedor_producto(struct Venta *, int, struct Vendedor, struct Producto);
-
-// Imprimir venta por vendedor
 void imprimir_venta_por_vendedor(struct Venta *, int, struct Producto);
-
-// Imprimir venta por producto
 void imprimir_venta_por_producto(struct Venta *, int, struct Producto);
-
-// prototipo de funcion filtrar por vendedor
 struct Venta *filtrar_por_vendedor(struct Vendedor, struct Venta *, int, int *);
-
-// prototipo de funcion filtrar por producto
 struct Venta *filtrar_por_producto(struct Producto, struct Venta *, int, int *);
 
 // Funcion principal Main()
@@ -123,6 +110,7 @@ int main()
 
 // Funciones para imprimir
 
+// Imprimir resumen semanal por vendedor
 void imprimir_resumen_semanal_vendedor(struct Semana *semanas, int tamano)
 {
     printf("\n\n");
@@ -139,15 +127,14 @@ void imprimir_resumen_semanal_vendedor(struct Semana *semanas, int tamano)
         // Tamaño de array ventas
         int tamano = sizeof(semanas[i].ventas) / sizeof(struct Venta);
 
-        // Tamaño de array de ventas filtrado
-        // int nuevoTamano = 0;
-        // struct Venta *ventasX = filtrar_por_vendedor(juan, semanas[i].ventas, tamano, &nuevoTamano);
-
+        // Imprimir ventas por vendedor del producto A
         imprimir_venta_por_vendedor(semanas[i].ventas, tamano, productoA);
+        // Imprimir ventas por vendedor del producto B
         imprimir_venta_por_vendedor(semanas[i].ventas, tamano, productoB);
     }
 }
 
+// IMPRIMIR RESUMEN SEMANAL POR PRODUCTOS
 void imprimir_resumen_semanal_productos(struct Semana *semanas, int tamano)
 {
     printf("\n\n");
@@ -155,6 +142,7 @@ void imprimir_resumen_semanal_productos(struct Semana *semanas, int tamano)
     printf("RESUMEN SEMANAL POR PRODUCTOS\n");
     printf("=============================\n");
 
+    // recorrer semanas
     for (int i = 0; i < tamano; i++)
     {
         printf("\n=========\n");
@@ -163,15 +151,13 @@ void imprimir_resumen_semanal_productos(struct Semana *semanas, int tamano)
 
         // Tamaño de array ventas
         int tamano = sizeof(semanas[i].ventas) / sizeof(struct Venta);
-        // Tamaño de array de ventas filtrado
-        int nuevoTamano = 0;
-        struct Venta *ventasX = filtrar_por_vendedor(juan, semanas[i].ventas, tamano, &nuevoTamano);
-
+        
         imprimir_venta_por_producto(semanas[i].ventas, tamano, productoA);
         imprimir_venta_por_producto(semanas[i].ventas, tamano, productoB);
     }
 }
 
+// Imprimir valor vendido semanal por producto
 void imprimir_valor_semanal_productos(struct Semana *semanas, int tamano)
 {
     printf("\n\n");
@@ -179,6 +165,7 @@ void imprimir_valor_semanal_productos(struct Semana *semanas, int tamano)
     printf("VALOR VENDIDO SEMANAL POR PRODUCTO\n");
     printf("==================================\n");
 
+    // recorrer semanas
     for (int i = 0; i < tamano; i++)
     {
         printf("\n=========\n");
@@ -188,14 +175,17 @@ void imprimir_valor_semanal_productos(struct Semana *semanas, int tamano)
         // Tamaño de array ventas
         int tamanoVentas = sizeof(semanas[i].ventas) / sizeof(struct Venta);
 
+        // Obtener el valor de las ventas de la semana i para el producto A
         double venta_productoA = venta_total_vendido_producto(semanas[i].ventas, tamanoVentas, productoA);
         printf("Producto A: $ %.2f\n", venta_productoA);
 
+        // Obtener el valor de las ventas de la semana i para el producto B
         double venta_productoB = venta_total_vendido_producto(semanas[i].ventas, tamanoVentas, productoB);
         printf("Producto B: $ %.2f\n", venta_productoB);
     }
 }
 
+// Imprimir valor vendido mensual pro producto
 void imprimir_valor_mensual_productos(struct Semana *semanas, int tamano)
 {
     printf("\n\n");
@@ -207,16 +197,17 @@ void imprimir_valor_mensual_productos(struct Semana *semanas, int tamano)
     printf("Mes de Marzo\n");
     printf("============\n");
 
+    // Variables de sumatoria para productos A y B
     double sumatoriaA = 0;
     double sumatoriaB = 0;
 
+    // Recorrer semanas
     for (int i = 0; i < tamano; i++)
     {
         // Tamaño de array ventas
         int tamano = sizeof(semanas[i].ventas) / sizeof(struct Venta);
-        // Tamaño de array de ventas filtrado
-        int nuevoTamano = 0;
-        struct Venta *ventasX = filtrar_por_vendedor(juan, semanas[i].ventas, tamano, &nuevoTamano);
+        
+        // Obtener valores de ventas de cada semana y sumarlas
 
         double venta_productoA = venta_total_vendido_producto(semanas[i].ventas, tamano, productoA);
         sumatoriaA = sumatoriaA + venta_productoA;
@@ -229,6 +220,7 @@ void imprimir_valor_mensual_productos(struct Semana *semanas, int tamano)
     printf("Producto B: $ %.2f\n", sumatoriaB);
 }
 
+// Imprimir comision semanal por producto para cada vendedor
 void imprimir_comision_semanal_vendedor(struct Semana *semanas, int tamano)
 {
     printf("\n\n");
@@ -262,6 +254,7 @@ void imprimir_comision_semanal_vendedor(struct Semana *semanas, int tamano)
     }
 }
 
+// Imprimir comision mensual por vendedor
 void imprimir_comision_mensual_vendedor(struct Semana *semanas, int tamano)
 {
     printf("\n\n");
@@ -291,6 +284,7 @@ void imprimir_comision_mensual_vendedor(struct Semana *semanas, int tamano)
     printf("%s: $ %.2f\n", luis.nombre, sumComisionLuis);
 }
 
+// Imprimir el total a pagar por comisiones en el mes
 void imprimir_total_comision(struct Semana *semanas, int tamano)
 {
     printf("\n\n");
@@ -316,6 +310,7 @@ void imprimir_total_comision(struct Semana *semanas, int tamano)
     printf("TOTAL COMISIONES: $ %.2f\n", sumComision);
 }
 
+// Imprimir la semana en la que mas se vendio un producto
 void imprimir_semana_mas_vendida_producto(struct Semana *semanas, int tamano, struct Producto producto)
 {
     printf("\n\n");
@@ -348,6 +343,7 @@ void imprimir_semana_mas_vendida_producto(struct Semana *semanas, int tamano, st
     printf("La semana %d se vendieron más unidades del Producto %s\n", semana, producto.tipo);
 }
 
+// Imprimir el vendedor con mas ventas en el mes
 void imprimir_vendedor_mas_ventas(struct Semana *semanas, int tamano)
 {
     printf("\n\n");
@@ -383,7 +379,7 @@ void imprimir_vendedor_mas_ventas(struct Semana *semanas, int tamano)
     printf("Valor total venta: %.2f\n", (mayorVenta.cantidad * mayorVenta.producto.valor));
 }
 
-// Funciones para obtener cifras
+// Funcion obtener el total vendido de un array de ventas por producto
 double venta_total_vendido_producto(struct Venta *ventas, int tamano, struct Producto producto)
 {
     double total_venta = 0;
@@ -400,6 +396,7 @@ double venta_total_vendido_producto(struct Venta *ventas, int tamano, struct Pro
     return total_venta;
 }
 
+// Otener comision de ventas de un producto por vendedor
 double comision_vendido_vendedor_producto(struct Venta *ventas, int tamano, struct Vendedor vendedor, struct Producto producto)
 {
     double total_comision = 0;
@@ -417,6 +414,7 @@ double comision_vendido_vendedor_producto(struct Venta *ventas, int tamano, stru
     return total_comision;
 }
 
+// Funcion Obtener comision de ventas por vendedor
 double comision_vendido_vendedor(struct Venta *ventas, int tamano, struct Vendedor vendedor)
 {
     double total_comision = 0;
@@ -434,6 +432,7 @@ double comision_vendido_vendedor(struct Venta *ventas, int tamano, struct Vended
     return total_comision;
 }
 
+// Funcion para devolver venta mas alta de un array de ventas
 struct Venta venta_mas_alta(struct Venta *ventas, int tamano)
 {
     struct Venta venta;
@@ -482,7 +481,7 @@ void imprimir_venta_por_producto(struct Venta *ventas, int tamano, struct Produc
     printf(" %d\n", sum);
 }
 
-// Definir funcion filtrar por vendedor
+// Fncion filtrar array de ventas por producto
 struct Venta *filtrar_por_producto(struct Producto producto, struct Venta *ventas, int tamano, int *tamano_filtrado)
 {
     struct Venta *filtrado = malloc(tamano * sizeof(struct Venta));
@@ -496,7 +495,7 @@ struct Venta *filtrar_por_producto(struct Producto producto, struct Venta *venta
     return filtrado;
 }
 
-// Definir funcion filtrar por vendedor
+// Funcion filtrar array de ventas por vendedor
 struct Venta *filtrar_por_vendedor(struct Vendedor vendedor, struct Venta *ventas, int tamano, int *tamano_filtrado)
 {
     struct Venta *filtrado = malloc(tamano * sizeof(struct Venta));
